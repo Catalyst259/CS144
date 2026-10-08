@@ -2,55 +2,68 @@
 
 using namespace std;
 
-ByteStream::ByteStream( uint64_t capacity ) : capacity_( capacity ) {}
+ByteStream::ByteStream( uint64_t capacity ) : capacity_( capacity ), buffer{} {}
 
 void Writer::push( string data )
 {
-  (void)data; // Your code here.
+  // Your code here.
+  // 保留到 available_capacity() 的长度
+  if( data.length() > available_capacity() ){
+    data = data.substr( 0, available_capacity() );
+  }
+  // 将数据添加到缓冲区
+  Writer::buffer.append( data );
+  // 更新 total_pushed
+  Writer::total_pushed += data.length();
 }
 
 void Writer::close()
 {
   // Your code here.
+  closed = true;
 }
 
 bool Writer::is_closed() const
 {
-  return {}; // Your code here.
+  return closed; // Your code here.
 }
 
 uint64_t Writer::available_capacity() const
 {
-  return {}; // Your code here.
+  return capacity_ - (total_pushed - total_popped); // Your code here.
 }
 
 uint64_t Writer::bytes_pushed() const
 {
-  return {}; // Your code here.
+  return total_pushed; // Your code here.
 }
 
 string_view Reader::peek() const
 {
-  return {}; // Your code here.
+  return buffer; // Your code here.
 }
 
 void Reader::pop( uint64_t len )
 {
-  (void)len; // Your code here.
+  if( len > buffer.length() ){
+    len = buffer.length();
+  }
+  buffer.erase( 0, len );
+  total_popped += len; // Your code here.
 }
 
 bool Reader::is_finished() const
 {
-  return {}; // Your code here.
+  return closed && (buffer.length() == 0); // Your code here.
 }
 
 uint64_t Reader::bytes_buffered() const
 {
-  return {}; // Your code here.
+  return buffer.length(); // Your code here.
 }
 
 uint64_t Reader::bytes_popped() const
 {
-  return {}; // Your code here.
+  return total_popped; // Your code here.
 }
 
