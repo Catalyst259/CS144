@@ -7,8 +7,25 @@
 
 using namespace std;
 
+// Input: A hostname and "path" part of a URL (e.g. "stanford.edu" and "/class/cs144") on the command line.
+// Output: The content of the HTTP response from the server, written to standard output.
 void get_URL( const string& host, const string& path )
 {
+  // 1. 解析 ip 地址 （DNS 解析）
+  Address addr { host, "http" };
+  // 2. 建立 TCP 连接
+  TCPSocket sock {};
+  sock.connect( addr );
+  // 3. 输入命令，GET /path HTTP/1.1\r\nHost: host\r\nConnection: close\r\n\r\n
+  string request = "GET " + path + " HTTP/1.1\r\nHost: " + host + "\r\nConnection: close\r\n\r\n";
+  sock.write( request );
+  // 4. 输出响应内容到标准输出：cout
+  string response {};
+  while ( not sock.eof() ){
+    sock.read( response );
+    cout << response;
+  }
+  return;
   cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
   cerr << "Warning: get_URL() has not been implemented yet.\n";
 }
