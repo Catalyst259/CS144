@@ -2,6 +2,9 @@
 
 #include "byte_stream.hh"
 
+#include <map>
+#include <optional>
+
 class Reassembler
 {
 public:
@@ -43,4 +46,6 @@ public:
 
 private:
   ByteStream output_;
+  std::map<uint64_t, char> pending_ {}; // 每个索引只保存一个尚未写入的字节。
+  std::optional<uint64_t> end_index_ {};
 };

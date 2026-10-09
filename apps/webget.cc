@@ -21,7 +21,7 @@ void get_URL( const string& host, const string& path )
   sock.write( request );
   // 4. 输出响应内容到标准输出：cout
   string response {};
-  while ( not sock.eof() ){
+  while ( not sock.eof() ) {
     sock.read( response );
     cout << response;
   }

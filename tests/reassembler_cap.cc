@@ -146,6 +146,21 @@ int main()
       test.execute( ReadAll( "c" ) );
       test.execute( IsFinished { true } );
     }
+    {
+      ReassemblerTestHarness test { "remember last index after discarding suffix", 2 };
+
+      test.execute( Insert { "abc", 0 }.is_last() );
+      test.execute( BytesPushed( 2 ) );
+      test.execute( BytesPending( 0 ) );
+      test.execute( IsClosed { false } );
+      test.execute( ReadAll( "ab" ) );
+
+      test.execute( Insert { "c", 2 } );
+      test.execute( BytesPushed( 3 ) );
+      test.execute( BytesPending( 0 ) );
+      test.execute( ReadAll( "c" ) );
+      test.execute( IsFinished { true } );
+    }
   } catch ( const exception& e ) {
     cerr << "Exception: " << e.what() << "\n";
     return EXIT_FAILURE;

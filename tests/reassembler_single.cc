@@ -84,6 +84,25 @@ int main()
       test.execute( BytesPushed( 1 ) );
       test.execute( IsFinished { false } );
     }
+    {
+      ReassemblerTestHarness test { "empty stream with zero capacity", 0 };
+
+      test.execute( Insert { "", 0 }.is_last() );
+      test.execute( BytesPushed( 0 ) );
+      test.execute( BytesPending( 0 ) );
+      test.execute( IsFinished { true } );
+    }
+
+    {
+      ReassemblerTestHarness test { "empty last substring with full output buffer", 1 };
+
+      test.execute( Insert { "a", 0 } );
+      test.execute( Insert { "", 1 }.is_last() );
+      test.execute( IsClosed { true } );
+      test.execute( IsFinished { false } );
+      test.execute( ReadAll( "a" ) );
+      test.execute( IsFinished { true } );
+    }
   } catch ( const exception& e ) {
     cerr << "Exception: " << e.what() << "\n";
     return EXIT_FAILURE;

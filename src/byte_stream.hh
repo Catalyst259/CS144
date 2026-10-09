@@ -27,7 +27,7 @@ protected:
   bool error_ {};
   std::string buffer;
   // bytes_buffered = total_pushed - total_popped;
-  // available_capacity = capacity - bytes_buffered; 
+  // available_capacity = capacity - bytes_buffered;
   // is_finished = closed && (bytes_buffered == 0);
   int total_pushed = 0;
   int total_popped = 0;
