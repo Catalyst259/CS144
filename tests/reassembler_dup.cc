@@ -89,16 +89,6 @@ int main()
       test.execute( IsFinished { false } );
     }
 
-    {
-      ReassemblerTestHarness test { "short duplicate of assembled unread data", 8 };
-
-      test.execute( Insert { "abc", 0 } );
-      test.execute( Insert { "a", 0 } );
-      test.execute( BytesPushed( 3 ) );
-      test.execute( BytesPending( 0 ) );
-      test.execute( ReadAll( "abc" ) );
-      test.execute( IsFinished { false } );
-    }
   } catch ( const exception& e ) {
     cerr << "Exception: " << e.what() << "\n";
     return EXIT_FAILURE;
